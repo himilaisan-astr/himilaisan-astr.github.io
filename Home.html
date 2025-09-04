@@ -1,0 +1,697 @@
+
+                <!DOCTYPE html>
+                <html lang="zh">
+                <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Home</title>
+                  <style>
+                    *,
+                    *::before,
+                    *::after {
+                      box-sizing: border-box;
+                      margin: 0;
+                    }
+                    .iframe-outer {
+                      position: fixed;
+                      top: 0;
+                      left: 0;
+                      bottom: 0;
+                      right: 0;
+                      display: flex;
+                      justify-content: center;
+                      background-color: #E0E0E0;
+                    }
+                    .iframe-wrapper {
+                      width: 100%;
+                      height: 100%;
+                      margin: 0 auto;
+                      transform-origin: center top;
+                      flex-shrink: 0;
+                    }
+                    #dynamicIframe {
+                      border: none;
+                      width: 100%;
+                      height: 100%;
+                    }
+                  </style>
+                  <script>
+                const width = 1920
+                const height = 1080
+                const resolutionRatio = width && height ? width / height : 1
+                const pageNameMap = {
+                  'home_hero': 'Home',
+    'leadership_section': 'Leadership Experience',
+    'projects_section': 'Featured Projects',
+    'about_section': 'About Me',
+    'resume_section': 'Resume',
+    'contact_section': 'Contact',
+    'resume_pdf_viewer': 'Resume Viewer',
+    'site_settings': 'Site Settings',
+    'privacy_policy': 'Privacy Policy',
+    'terms_of_service': 'Terms of Service'
+                }
+                function setIframeSize(w, h) {
+                  const currentContainerRadio = w / h
+                  let widthValue = w
+                  let heightValue = h
+                  let zoom = 1
+                  if (currentContainerRadio > resolutionRatio) {
+                    widthValue = h * resolutionRatio
+                    heightValue = h
+                  } else {
+                    widthValue = w
+                    heightValue = w / resolutionRatio
+                  }
+                  zoom = width ? widthValue / width : 1
+                  return {
+                    width: widthValue / zoom + 'px',
+                    height: heightValue / zoom + 'px',
+                    zoom,
+                  }
+                }
+                function adjustIframeSize() {
+                  const iframeWrapper = document.querySelector(".iframe-wrapper")
+                  const { width, height, zoom } = setIframeSize(window.innerWidth, window.innerHeight)
+                  iframeWrapper.style.height = height
+                  iframeWrapper.style.width = width
+                  iframeWrapper.style.transform = 'scale(' + zoom + ')'
+                }
+                function sanitizeFilename(name) {
+                  return name.replace(/[\/:*?"<>|]/g, '_')
+                }
+                function handlePostMessage(event) {
+                  if (!event.data) {
+                    return
+                  }
+                  const { type, targetPageId } = event.data
+                  const targetPageName = pageNameMap[targetPageId]
+                  if (type === "iframeNavigation" && targetPageId && targetPageName) {
+                    window.location.href = targetPageName + '.html'
+                  }
+                }
+                window.addEventListener('message', handlePostMessage)
+                window.onload = adjustIframeSize
+                window.onresize = adjustIframeSize
+                window.onunload = () => {
+                  window.removeEventListener('message', handlePostMessage)
+                }
+              </script>
+                </head>
+                <body>
+                  <div class="iframe-outer">
+                    <div class="iframe-wrapper">
+                      <iframe id="dynamicIframe" srcdoc='<html lang="en" data-theme="black"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinh The Nguyen - Product &amp;amp; Engineering Leader</title>
+    <link href="./assets/6ade000f/npm/daisyui@5.css" rel="stylesheet" type="text/css">
+    <script src="./assets/82d7fdc5/npm/@tailwindcss/browser@4.js"></script>
+    <link href="./assets/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css">
+    <script src="./assets/3/3.1.1/iconify.min.js"></script>
+    <style>
+/* daisyUI Theme Variables Customization
+ * Cyberpunk/Space-tech theme with dark background and neon accents
+ */
+:root {
+    /* Cyberpunk brand color injection */
+    --color-primary: rgba(138, 43, 226, 1); /* Neon Blue-Violet #8A2BE2 */
+    --color-primary-content: rgba(255, 255, 255, 1);
+    --color-secondary: rgba(0, 255, 255, 1); /* Teal #00FFFF */
+    --color-secondary-content: rgba(0, 0, 0, 1);
+    --color-accent: rgba(255, 69, 0, 1); /* Red-Orange #FF4500 */
+    --color-accent-content: rgba(255, 255, 255, 1);
+    
+    /* Dark theme backgrounds */
+    --color-base-100: rgba(0, 0, 0, 1); /* Pure Black */
+    --color-base-200: rgba(26, 26, 26, 1); /* Dark Gray #1A1A1A */
+    --color-base-300: rgba(43, 43, 43, 1); /* Darker Gray #2B2B2B */
+    --color-base-content: rgba(255, 255, 255, 1); /* White text */
+    
+    /* Semantic colors with cyberpunk palette */
+    --color-success: rgba(0, 255, 0, 1); /* Lime */
+    --color-warning: rgba(255, 69, 0, 1); /* Red-Orange */
+    --color-error: rgba(255, 0, 0, 1); /* Red */
+    --color-info: rgba(138, 43, 226, 1); /* Neon Blue-Violet */
+    
+    /* Sharp, futuristic styling */
+    --radius-box: 0.125rem; /* 2px for sharp edges */
+    --radius-field: 0.125rem;
+    --border: 1px;
+}
+
+/* Typography enhancement for tech aesthetic */
+body {
+    font-family: "Inter", "Roboto Flex", "Exo 2", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background: var(--color-base-100);
+    color: var(--color-base-content);
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; color: var(--color-base-content); }
+h2 { font-size: 2rem; font-weight: 600; color: var(--color-base-content); }
+h3 { font-size: 1.5rem; font-weight: 600; color: var(--color-base-content); }
+h4 { font-size: 1.25rem; font-weight: 600; color: var(--color-base-content); }
+
+/* Cyberpunk glow effects */
+.neon-glow {
+    box-shadow: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary), 0 0 15px var(--color-primary);
+}
+
+.neon-border {
+    border: 1px solid var(--color-primary);
+    box-shadow: 0 0 3px var(--color-primary);
+}
+
+/* Subtle background patterns */
+.tech-pattern {
+    background-image: 
+        linear-gradient(rgba(138, 43, 226, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 43, 226, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Frosted glass effect for elevated elements */
+.glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced transitions for smooth interactions */
+.transition-cyber {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Layout constraints */
+.container-main {
+    max-width: 1872px; /* 1920 - 48px margins */
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Secondary text styling */
+.text-secondary {
+    color: rgba(204, 204, 204, 1);
+}
+
+/* Interactive element hover states */
+.hover-neon:hover {
+    box-shadow: 0 0 8px var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-base-300);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+}
+</style> <style>
+#HeroSection {
+  background-color: var(--color-base-100);
+}
+
+#particle-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+      radial-gradient(circle at 20% 25%, rgba(138, 43, 226, 0.15) 1px, transparent 1px),
+      radial-gradient(circle at 80% 15%, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 50% 75%, rgba(138, 43, 226, 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 10% 90%, rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 90% 85%, rgba(138, 43, 226, 0.08) 1px, transparent 1px);
+  background-size: 400px 400px;
+  animation: moveParticles 80s linear infinite;
+  z-index: 0;
+}
+
+@keyframes moveParticles {
+    0% { background-position: 0 0; }
+    100% { background-position: -400px -400px; }
+}
+
+/* Custom button styles for a more pronounced cyberpunk effect */
+#HeroSection .btn {
+  border-radius: var(--radius-field);
+  border-width: var(--border);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform: perspective(1px) translateZ(0); /* Promotes to its own layer for smoother animation */
+}
+
+#HeroSection .btn:hover {
+  transform: translateY(-3px);
+}
+
+#HeroSection .btn.btn-primary {
+  box-shadow: 0 0 5px var(--color-primary), inset 0 0 5px rgba(138, 43, 226, 0.5);
+}
+
+#HeroSection .btn.btn-primary:hover {
+  box-shadow: 0 0 15px var(--color-primary), 0 0 25px var(--color-primary), inset 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+#HeroSection .btn.btn-secondary {
+  box-shadow: 0 0 5px var(--color-secondary), inset 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+#HeroSection .btn.btn-secondary:hover {
+  box-shadow: 0 0 15px var(--color-secondary), 0 0 25px var(--color-secondary), inset 0 0 10px rgba(0, 255, 255, 0.5);
+}
+</style>
+  </head>
+  <body class="bg-base-100 text-base-content">
+    <div data-section-id="common_header" data-section-type="common_header" class="navbar bg-base-100 border-b border-base-300 px-6 h-16 sticky top-0 z-50 glass-effect">
+    <!-- Left side: Logo and branding -->
+    <div class="navbar-start flex items-center gap-4">
+        <button class="btn btn-ghost btn-sm lg:hidden" onclick="toggleSidebar()">
+            <span class="iconify" data-icon="heroicons:bars-3" data-width="20"></span>
+        </button>
+        
+        <div class="flex items-center gap-3" onclick="navigateTo(&#39;home_hero&#39;)" style="cursor: pointer;">
+            <div class="w-10 h-10 bg-primary rounded flex items-center justify-center neon-glow">
+                <span class="text-primary-content font-bold text-lg">VN</span>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-lg font-semibold text-base-content">Vinh Nguyen</h1>
+                <span class="text-xs text-secondary">CTO &amp;amp; Product Leader</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Center: Main navigation -->
+    <div class="navbar-center hidden lg:flex">
+        <nav class="menu menu-horizontal gap-1">
+            <a onclick="navigateTo(&#39;home_hero&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:home" data-width="16"></span>
+                Home
+            </a>
+            <a onclick="navigateTo(&#39;leadership_section&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:user-group" data-width="16"></span>
+                Leadership
+            </a>
+            <a onclick="navigateTo(&#39;projects_section&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:code-bracket" data-width="16"></span>
+                Projects
+            </a>
+            <a onclick="navigateTo(&#39;about_section&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:user" data-width="16"></span>
+                About
+            </a>
+            <a onclick="navigateTo(&#39;resume_section&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:document-text" data-width="16"></span>
+                Resume
+            </a>
+            <a onclick="navigateTo(&#39;contact_section&#39;)" class="btn btn-ghost btn-sm transition-cyber hover-neon">
+                <span class="iconify" data-icon="heroicons:envelope" data-width="16"></span>
+                Contact
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Right side: CTA and settings -->
+    <div class="navbar-end flex items-center gap-3">
+        <!-- Theme toggle -->
+        <button class="btn btn-ghost btn-sm" onclick="toggleTheme()" title="Toggle Theme">
+            <span class="iconify" data-icon="heroicons:moon" data-width="20"></span>
+        </button>
+        
+        <!-- Language dropdown -->
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                <span class="iconify" data-icon="heroicons:language" data-width="20"></span>
+                <span class="hidden sm:inline text-sm">EN</span>
+            </div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-40 mt-2 border border-base-300">
+                <li><a onclick="switchLanguage(&#39;en&#39;)" class="flex items-center gap-2">
+                    <span>🇺🇸</span><span>English</span>
+                </a></li>
+                <li><a onclick="switchLanguage(&#39;vi&#39;)" class="flex items-center gap-2">
+                    <span>🇻🇳</span><span>Tiếng Việt</span>
+                </a></li>
+                <li><a onclick="switchLanguage(&#39;ja&#39;)" class="flex items-center gap-2">
+                    <span>🇯🇵</span><span>日本語</span>
+                </a></li>
+                <li><a onclick="switchLanguage(&#39;es&#39;)" class="flex items-center gap-2">
+                    <span>🇪🇸</span><span>Español</span>
+                </a></li>
+                <li><a onclick="switchLanguage(&#39;fr&#39;)" class="flex items-center gap-2">
+                    <span>🇫🇷</span><span>Français</span>
+                </a></li>
+            </ul>
+        </div>
+        
+        <!-- Hire Me CTA -->
+        <a onclick="navigateTo(&#39;contact_section&#39;)" class="btn btn-primary btn-sm neon-glow transition-cyber">
+            <span class="iconify" data-icon="heroicons:briefcase" data-width="16"></span>
+            <span class="hidden sm:inline">Hire Me</span>
+        </a>
+        
+        <!-- Mobile menu -->
+        <div class="dropdown dropdown-end lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                <span class="iconify" data-icon="heroicons:ellipsis-vertical" data-width="20"></span>
+            </div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-52 mt-2 border border-base-300">
+                <li><a onclick="navigateTo(&#39;home_hero&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:home" data-width="16"></span>
+                    <span>Home</span>
+                </a></li>
+                <li><a onclick="navigateTo(&#39;leadership_section&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:user-group" data-width="16"></span>
+                    <span>Leadership</span>
+                </a></li>
+                <li><a onclick="navigateTo(&#39;projects_section&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:code-bracket" data-width="16"></span>
+                    <span>Projects</span>
+                </a></li>
+                <li><a onclick="navigateTo(&#39;about_section&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:user" data-width="16"></span>
+                    <span>About</span>
+                </a></li>
+                <li><a onclick="navigateTo(&#39;resume_section&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:document-text" data-width="16"></span>
+                    <span>Resume</span>
+                </a></li>
+                <li><a onclick="navigateTo(&#39;contact_section&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:envelope" data-width="16"></span>
+                    <span>Contact</span>
+                </a></li>
+                <div class="divider my-1"></div>
+                <li><a onclick="navigateTo(&#39;site_settings&#39;)" class="flex items-center gap-2">
+                    <span class="iconify" data-icon="heroicons:cog-6-tooth" data-width="16"></span>
+                    <span>Settings</span>
+                </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    <main>
+      <section id="HeroSection" class="hero min-h-screen relative overflow-hidden bg-base-100">
+        <div id="particle-background" class="absolute inset-0"></div>
+        <div class="hero-overlay bg-base-100/50"></div>
+        <div class="hero-content text-center z-10 p-4">
+          <div class="max-w-3xl glass-effect p-8 md:p-12 rounded-lg shadow-2xl shadow-primary/20">
+            <h1 class="mb-4 text-5xl md:text-7xl font-bold text-base-content tracking-tight">
+              Vinh The Nguyen
+            </h1>
+            <h2 class="mb-6 text-2xl md:text-3xl font-light text-primary">
+              Product &amp;amp; Engineering Leader
+            </h2>
+            <p class="mb-8 max-w-2xl mx-auto text-lg text-base-content/80">
+              Crafting the future by building scalable products, fostering
+              innovation, and mentoring high-performance teams.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button class="btn btn-primary btn-wide" onclick="navigateTo(&#39;resume_pdf_viewer&#39;)">
+                <span class="iconify mr-2" data-icon="heroicons:document-text" data-width="20"></span>
+                View Resume PDF</button><button class="btn btn-secondary btn-wide" onclick="navigateTo(&#39;projects_section&#39;)">
+                <span class="iconify mr-2" data-icon="heroicons:wrench-screwdriver" data-width="20"></span>
+                See My Work
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div data-section-id="common_footer" data-section-type="common_footer" class="bg-base-200 border-t border-base-300 mt-auto tech-pattern">
+    <!-- Main footer content -->
+    <footer class="footer footer-center p-10 text-base-content">
+        <aside class="grid-flow-col items-center">
+            <div class="w-12 h-12 bg-primary rounded flex items-center justify-center neon-glow">
+                <span class="text-primary-content font-bold text-xl">VN</span>
+            </div>
+            <div class="text-center">
+                <h3 class="font-semibold text-lg">Vinh The Nguyen</h3>
+                <p class="text-secondary">CTO • Product Manager • Senior Fullstack Developer</p>
+                <p class="text-sm text-base-content/70 mt-2">Engineering leader delivering scalable, user-centric products</p>
+            </div>
+        </aside>
+        
+        <!-- Social links -->
+        <nav>
+            <div class="grid grid-flow-col gap-4">
+                <a href="https://github.com/vinhnguyen" target="_blank" class="btn btn-ghost btn-circle hover-neon transition-cyber" title="GitHub">
+                    <span class="iconify" data-icon="mdi:github" data-width="24"></span>
+                </a>
+                <a href="https://linkedin.com/in/vinhnguyen" target="_blank" class="btn btn-ghost btn-circle hover-neon transition-cyber" title="LinkedIn">
+                    <span class="iconify" data-icon="mdi:linkedin" data-width="24"></span>
+                </a>
+                <a href="mailto:vinh@example.com" class="btn btn-ghost btn-circle hover-neon transition-cyber" title="Email">
+                    <span class="iconify" data-icon="heroicons:envelope" data-width="24"></span>
+                </a>
+                <a href="https://twitter.com/vinhnguyen" target="_blank" class="btn btn-ghost btn-circle hover-neon transition-cyber" title="Twitter">
+                    <span class="iconify" data-icon="mdi:twitter" data-width="24"></span>
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Quick navigation -->
+        <nav class="grid grid-flow-col gap-6">
+            <a onclick="navigateTo(&#39;home_hero&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">Home</a>
+            <a onclick="navigateTo(&#39;leadership_section&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">Leadership</a>
+            <a onclick="navigateTo(&#39;projects_section&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">Projects</a>
+            <a onclick="navigateTo(&#39;about_section&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">About</a>
+            <a onclick="navigateTo(&#39;resume_section&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">Resume</a>
+            <a onclick="navigateTo(&#39;contact_section&#39;)" class="link link-hover text-base-content hover:text-primary transition-cyber">Contact</a>
+        </nav>
+        
+        <!-- Call to action -->
+        <div class="flex flex-col sm:flex-row gap-4 items-center">
+            <button onclick="navigateTo(&#39;contact_section&#39;)" class="btn btn-primary neon-glow transition-cyber">
+                <span class="iconify" data-icon="heroicons:briefcase" data-width="16"></span>
+                Let&#39;s Work Together
+            </button>
+            <button onclick="downloadResume()" class="btn btn-secondary transition-cyber">
+                <span class="iconify" data-icon="heroicons:arrow-down-tray" data-width="16"></span>
+                Download Resume
+            </button>
+        </div>
+    </footer>
+    
+    <!-- Copyright footer -->
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content border-t border-base-300">
+        <aside class="flex flex-col sm:flex-row items-center gap-2">
+            <p class="text-sm text-center">
+                © 2025 Vinh The Nguyen. All rights reserved.
+            </p>
+            <div class="flex gap-4 text-sm">
+                <a onclick="navigateTo(&#39;privacy_policy&#39;)" class="link link-hover hover:text-primary transition-cyber">Privacy Policy</a>
+                <span class="text-base-content/50">•</span>
+                <a onclick="navigateTo(&#39;terms_of_service&#39;)" class="link link-hover hover:text-primary transition-cyber">Terms of Service</a>
+            </div>
+        </aside>
+    </footer>
+</div>
+
+<style>
+[data-section-id="common_footer"] {
+    margin-top: auto;
+}
+
+[data-section-id="common_footer"] .link-hover:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+[data-section-id="common_footer"] .footer-center aside {
+    display: grid;
+    place-items: center;
+    gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    [data-section-id="common_footer"] nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        text-align: center;
+    }
+}
+</style><script>
+(function() {
+    // Initialize global namespace
+    window.APP_GLOBALS = window.APP_GLOBALS || {};
+    
+    // Global navigation function
+    window.navigateTo = function(targetPageId) {
+        const isInIframe = window.self !== window.top;
+        const targetFileName = `${targetPageId}.html`;
+        
+        if (isInIframe) {
+            window.parent.postMessage({
+                type: &#39;iframeNavigation&#39;,
+                targetPageId: targetPageId
+            }, &#39;*&#39;);
+        } else {
+            window.location.href = targetFileName;
+        }
+    };
+    
+    // Sidebar collapse/expand functionality
+    window.toggleSidebar = function() {
+        const sidebar = document.querySelector(&#39;[data-section-id="common_sidebar"]&#39;);
+        const mainContent = document.querySelector(&#39;.main-content-area&#39;);
+        
+        if (sidebar) {
+            sidebar.classList.toggle(&#39;sidebar-collapsed&#39;);
+            if (mainContent) {
+                mainContent.classList.toggle(&#39;sidebar-collapsed&#39;);
+            }
+        }
+    };
+    
+    // Language switching functionality
+    window.switchLanguage = function(lang) {
+        // Store language preference
+        localStorage.setItem(&#39;preferredLanguage&#39;, lang);
+        // Reload page with new language
+        window.location.reload();
+    };
+    
+    // Theme switching functionality
+    window.toggleTheme = function() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute(&#39;data-theme&#39;);
+        const newTheme = currentTheme === &#39;black&#39; ? &#39;light&#39; : &#39;black&#39;;
+        
+        html.setAttribute(&#39;data-theme&#39;, newTheme);
+        localStorage.setItem(&#39;preferredTheme&#39;, newTheme);
+    };
+    
+    // Contact form handling
+    window.handleContactForm = function(formData) {
+        // Placeholder for contact form submission
+        console.log(&#39;Contact form submitted:&#39;, formData);
+        // Here you would integrate with your email service
+    };
+    
+    // Download resume functionality
+    window.downloadResume = function() {
+        // Placeholder for resume download
+        const resumeUrl = &#39;/assets/vinh-nguyen-resume.pdf&#39;;
+        const link = document.createElement(&#39;a&#39;);
+        link.href = resumeUrl;
+        link.download = &#39;Vinh-Nguyen-Resume.pdf&#39;;
+        link.click();
+    };
+    
+    // User menu dropdown control
+    window.toggleUserMenu = function() {
+        const dropdown = document.querySelector(&#39;.user-menu-dropdown&#39;);
+        if (dropdown) {
+            dropdown.classList.toggle(&#39;dropdown-open&#39;);
+        }
+    };
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener(&#39;click&#39;, function(event) {
+        const userMenu = document.querySelector(&#39;.user-menu-dropdown&#39;);
+        if (userMenu &amp;&amp; !userMenu.contains(event.target)) {
+            userMenu.classList.remove(&#39;dropdown-open&#39;);
+        }
+    });
+    
+    // Handle escape key to close modals and dropdowns
+    document.addEventListener(&#39;keydown&#39;, function(event) {
+        if (event.key === &#39;Escape&#39;) {
+            const userMenu = document.querySelector(&#39;.user-menu-dropdown&#39;);
+            if (userMenu) {
+                userMenu.classList.remove(&#39;dropdown-open&#39;);
+            }
+        }
+    });
+    
+    // Smooth scroll for anchor links
+    window.scrollToSection = function(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: &#39;smooth&#39; });
+        }
+    };
+    
+    // Initialize theme and language on page load
+    document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+        // Set theme from localStorage
+        const savedTheme = localStorage.getItem(&#39;preferredTheme&#39;) || &#39;black&#39;;
+        document.documentElement.setAttribute(&#39;data-theme&#39;, savedTheme);
+        
+        // Set language from localStorage
+        const savedLanguage = localStorage.getItem(&#39;preferredLanguage&#39;) || &#39;en&#39;;
+        // Update language-dependent content
+        updateLanguageContent(savedLanguage);
+        
+        // Add subtle animations to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: &#39;0px 0px -50px 0px&#39;
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add(&#39;animate-fade-in&#39;);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe sections for animation
+        document.querySelectorAll(&#39;[data-section-id]&#39;).forEach(section => {
+            observer.observe(section);
+        });
+    });
+    
+    // Language content updates
+    function updateLanguageContent(lang) {
+        // This would update text content based on selected language
+        // Implementation would depend on your internationalization strategy
+        APP_GLOBALS.currentLanguage = lang;
+    }
+    
+    // Add CSS class for fade-in animation
+    const style = document.createElement(&#39;style&#39;);
+    style.textContent = `
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+</script><script>
+// No page-specific JavaScript is required for the hero section&#39;s core functionality.
+// All interactions are handled by CSS and global functions from common_script.
+</script>
+  
+
+</body></html>'></iframe>
+                    </div>
+                  </div>
+
+                </body>
+                </html>
+            
