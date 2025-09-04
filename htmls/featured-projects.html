@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Featured Projects | Portfolio</title>
+<link rel="stylesheet" href="../assets/npm/daisyui@5/themes.css" />
+  <link rel="stylesheet" href="../assets/6ade000f/npm/daisyui@5.css" />
+  <script src="../assets/3/3.1.1/iconify.min.js"></script>
+  <script src="../assets/82d7fdc5/npm/@tailwindcss/browser@4.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { display: flex; flex-direction: column; }
+    main { flex: 1; }
+  </style>
+</head>
+<body class="bg-base-200">
+
+  <!-- Navbar -->
+  <div data-include="../components/navbar.html"></div>
+
+  <!-- Main Content -->
+  <main class="p-10 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-6">Featured Projects</h1>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="card bg-base-100 shadow-xl p-6">
+        <h2 class="text-xl font-semibold mb-2">Project One</h2>
+        <p>A web app built with React + FastAPI for tracking stock trading performance.</p>
+      </div>
+      <div class="card bg-base-100 shadow-xl p-6">
+        <h2 class="text-xl font-semibold mb-2">Project Two</h2>
+        <p>A mobile app built with React Native for Buddhist community engagement.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div data-include="../components/footer.html"></div>
+
+  <!-- Script -->
+  <script src="../scripts/include.js"></script>
+</body>
+</html>

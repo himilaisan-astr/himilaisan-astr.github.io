@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Portfolio</title>
+<link rel="stylesheet" href="../assets/npm/daisyui@5/themes.css" />
+  <link rel="stylesheet" href="../assets/6ade000f/npm/daisyui@5.css" />
+  <script src="../assets/3/3.1.1/iconify.min.js"></script>
+  <script src="../assets/82d7fdc5/npm/@tailwindcss/browser@4.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { display: flex; flex-direction: column; }
+    main { flex: 1; }
+  </style>
+</head>
+<body class="bg-base-200">
+
+  <!-- Navbar -->
+  <div data-include="../components/navbar.html"></div>
+
+  <!-- Main Content -->
+  <main class="p-10 max-w-2xl mx-auto">
+    <h1 class="text-4xl font-bold mb-6">Contact Me</h1>
+    <form class="grid gap-4">
+      <input type="text" placeholder="Your Name" class="input input-bordered w-full" required />
+      <input type="email" placeholder="Your Email" class="input input-bordered w-full" required />
+      <textarea placeholder="Your Message" class="textarea textarea-bordered w-full" rows="5"></textarea>
+      <button type="submit" class="btn btn-primary w-full">Send Message</button>
+    </form>
+  </main>
+
+ <!-- Footer -->
+  <div data-include="../components/footer.html"></div>
+
+  <!-- Script -->
+  <script src="../scripts/include.js"></script>
+</body>
+</html>
